@@ -1,0 +1,184 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02BW80HOJSOC16F6x253LFi4i0bE6G9q1gZ",
+    "name": "close-sca-alert",
+    "title": "close-sca-alert",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "alert_id",
+          "type": "datatype.string",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_02BW8ADS5GVY96bNbPXKXBVpxAROzlvJjXQ",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "1-kemast-atomics",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "display_name": "close-sca-alert",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "target_id": "definition_target_02BFW0K3EFZOE2aSuZYHiItk6hsXYGN5Jfs",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02BW8MMV204BO7S3fDHUmJ8y6R4VvnItZmv",
+        "name": "HTTP Request",
+        "title": "close sca alert",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "allow_headers_redirect": false,
+          "body": "{\n\"new_comment\":\"Closed by XDR Automation\",\n\"resolved\":true,\n\"merit\":8\n}",
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "$global.variable_02BW8ZCZGVIMH5idzb2IJjjFffeAhYmvNjR.global.variable_02BW8ZCZGVIMH5idzb2IJjjFffeAhYmvNjR$"
+            }
+          ],
+          "display_name": "close sca alert",
+          "method": "PATCH",
+          "relative_url": "/v3/alerts/alert/$workflow.definition_workflow_02BW80HOJSOC16F6x253LFi4i0bE6G9q1gZ.input.variable_workflow_02BW8ADS5GVY96bNbPXKXBVpxAROzlvJjXQ$/",
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02BW8FED6QBQK0UcjC8QhimurjPzfXTiFqg",
+        "name": "Condition Block",
+        "title": "was it successful",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "was it successful",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_02BW8FEECZLV11EZukS5rrTdPbNLIybAeWf",
+            "name": "Condition Branch",
+            "title": "No",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": {
+                  "left_operand": "$activity.definition_activity_02BW8MMV204BO7S3fDHUmJ8y6R4VvnItZmv.output.status_code$",
+                  "operator": "ne",
+                  "right_operand": 200
+                },
+                "operator": "and",
+                "right_operand": {
+                  "left_operand": "$activity.definition_activity_02BW8MMV204BO7S3fDHUmJ8y6R4VvnItZmv.output.status_code$",
+                  "operator": "ne",
+                  "right_operand": 204
+                }
+              },
+              "continue_on_failure": false,
+              "display_name": "No",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02BW8UAFEDJ3Q3kRCFkPeLnxbpFlmlG28b3",
+                "name": "Completed",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Completed",
+                  "result_message": "Alert could not be closed.\n\nStatus Code:$activity.definition_activity_02BW8MMV204BO7S3fDHUmJ8y6R4VvnItZmv.output.status_code$\nStatus Text:$activity.definition_activity_02BW8MMV204BO7S3fDHUmJ8y6R4VvnItZmv.output.status_text$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_02BW36BM1KMT82V1bQaRMIRRLUuT3fvO5sg"
+    ]
+  },
+  "categories": {
+    "category_02BW36BM1KMT82V1bQaRMIRRLUuT3fvO5sg": {
+      "unique_name": "category_02BW36BM1KMT82V1bQaRMIRRLUuT3fvO5sg",
+      "name": "km-workflows",
+      "title": "km-workflows",
+      "type": "basic.category",
+      "base_type": "category",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "targets": {
+    "definition_target_02BFW0K3EFZOE2aSuZYHiItk6hsXYGN5Jfs": {
+      "unique_name": "definition_target_02BFW0K3EFZOE2aSuZYHiItk6hsXYGN5Jfs",
+      "name": "km_sca_target",
+      "title": "km_sca_target",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "description": "",
+        "disable_certificate_validation": false,
+        "display_name": "km_sca_target",
+        "host": "cisco-kemast.obsrvbl.com",
+        "ignore_proxy": false,
+        "no_runtime_user": true,
+        "path": "/api/",
+        "protocol": "https"
+      }
+    }
+  },
+  "variables": {
+    "variable_02BW8ZCZGVIMH5idzb2IJjjFffeAhYmvNjR": {
+      "unique_name": "variable_02BW8ZCZGVIMH5idzb2IJjjFffeAhYmvNjR",
+      "properties": {
+        "value": "*****",
+        "scope": "global",
+        "name": "API - SCA",
+        "type": "datatype.secure_string",
+        "is_required": false,
+        "display_on_wizard": false,
+        "is_invisible": false
+      },
+      "object_type": "variable"
+    }
+  }
+}
