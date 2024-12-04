@@ -1,0 +1,92 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02J5ZYEBY38UJ5xlwjlDVGGPplloi40pW2b",
+    "name": "create-hostname-table",
+    "title": "create-hostname-table",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "host_list",
+          "type": "datatype.string",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "text"
+        },
+        "unique_name": "variable_workflow_02J5ZYRB849G44Dq1Wf3v4GTMaRd1mbKdSt",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "1-kemast-atomics",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "display_name": "create-hostname-table",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "no_target": true
+      },
+      "wf_metadata": {
+        "coa": {
+          "observable_types": [
+            "hostname"
+          ]
+        }
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02J5ZYI8G04OO3f7bO4x7Ww9wkdfzcJwZGw",
+        "name": "Read Table from Text",
+        "title": "Read Table from Text",
+        "type": "core.read_table_from_text",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "delimiters": [
+            {
+              "delimiter": ","
+            }
+          ],
+          "display_name": "Read Table from Text",
+          "input_text": "$workflow.definition_workflow_02J5ZYEBY38UJ5xlwjlDVGGPplloi40pW2b.input.variable_workflow_02J5ZYRB849G44Dq1Wf3v4GTMaRd1mbKdSt$",
+          "persist_output": true,
+          "populate_columns": false,
+          "skip_execution": false,
+          "table_columns": [
+            {
+              "column_name": "hostname",
+              "column_type": "string"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_02BW2WTJC3C1S3yYwEYahcLxk9uDitDquZP"
+    ]
+  },
+  "categories": {
+    "category_02BW2WTJC3C1S3yYwEYahcLxk9uDitDquZP": {
+      "unique_name": "category_02BW2WTJC3C1S3yYwEYahcLxk9uDitDquZP",
+      "name": "km-atomics",
+      "title": "km-atomics",
+      "type": "basic.category",
+      "base_type": "category",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  }
+}
